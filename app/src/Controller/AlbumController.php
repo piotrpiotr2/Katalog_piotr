@@ -50,11 +50,11 @@ class AlbumController extends AbstractController
     /**
      * Constructor.
      *
-     * @param AlbumServiceInterface $albumService Album service
+     * @param AlbumServiceInterface   $albumService   Album service
      * @param CommentServiceInterface $commentService Comment Service
-     * @param TranslatorInterface $translator Translator
+     * @param TranslatorInterface     $translator     Translator
      */
-    public function __construct(AlbumServiceInterface $albumService, TranslatorInterface $translator, CommentServiceInterface $commentService)
+    public function __construct(AlbumServiceInterface $albumService, CommentServiceInterface $commentService, TranslatorInterface $translator)
     {
         $this->albumService = $albumService;
         $this->commentService = $commentService;
@@ -65,7 +65,7 @@ class AlbumController extends AbstractController
      * Index action.
      *
      * @param AlbumListInputFiltersDto $filters Input filters
-     * @param int                     $page    Page number
+     * @param int                      $page    Page number
      *
      * @return Response HTTP response
      */
@@ -87,7 +87,7 @@ class AlbumController extends AbstractController
     /**
      * View action.
      *
-     * @param Album $album Album entity
+     * @param Album   $album   Album entity
      * @param Request $request HTTP request
      *
      * @return Response HTTP response
@@ -129,6 +129,7 @@ class AlbumController extends AbstractController
                     'success',
                     $this->translator->trans('message.comment_created_successfully')
                 );
+
             return $this->redirectToRoute('album_view', ['id' => $album->getId()]);
         }
             $comment = $this->commentService->findBy([$album->getId()]);
@@ -184,7 +185,7 @@ class AlbumController extends AbstractController
      * Edit action.
      *
      * @param Request $request HTTP request
-     * @param Album    $album    Album entity
+     * @param Album   $album   Album entity
      *
      * @return Response HTTP response
      */
@@ -230,7 +231,7 @@ class AlbumController extends AbstractController
      * Delete action.
      *
      * @param Request $request HTTP request
-     * @param Album    $album    Album entity
+     * @param Album   $album   Album entity
      *
      * @return Response HTTP response
      */

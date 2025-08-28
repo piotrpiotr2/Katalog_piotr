@@ -18,7 +18,8 @@ interface AlbumServiceInterface
     /**
      * Get paginated list.
      *
-     * @param int $page Page number
+     * @param int                      $page    Page number
+     * @param AlbumListInputFiltersDto $filters Album list input filters dto
      *
      * @return PaginationInterface Paginated list
      */

@@ -63,6 +63,4 @@ class CategoryRepository extends ServiceEntityRepository
         $this->getEntityManager()->remove($category);
         $this->getEntityManager()->flush();
     }
-        
-
 }

@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * Registration form type.
+ */
 namespace App\Form\Type;
 
 use App\Entity\User;
@@ -10,8 +13,19 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
+/**
+ * Class RegistrationFormType.
+ */
 class RegistrationFormType extends AbstractType
 {
+    /**
+     * Builds the form.
+     *
+     * @param FormBuilderInterface $builder The form builder
+     * @param array<string, mixed> $options Form options
+     *
+     * @see FormTypeExtensionInterface::buildForm()
+     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -24,8 +38,7 @@ class RegistrationFormType extends AbstractType
                     ]),
                     new Length([
                         'min' => 6,
-                        'minMessage' => 'Your password should be at least {{ limit }} characters',
-                        // max length allowed by Symfony for security reasons
+                        'minMessage' => 'Your password should be at least 6 characters',
                         'max' => 4096,
                     ]),
                 ],
@@ -33,6 +46,11 @@ class RegistrationFormType extends AbstractType
         ;
     }
 
+    /**
+     * Configures the options for this type.
+     *
+     * @param OptionsResolver $resolver The resolver for the options
+     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([

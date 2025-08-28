@@ -63,7 +63,4 @@ class TagRepository extends ServiceEntityRepository
         $this->getEntityManager()->remove($tag);
         $this->getEntityManager()->flush();
     }
-
-
-
 }

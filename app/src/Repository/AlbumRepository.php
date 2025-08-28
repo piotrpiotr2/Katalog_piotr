@@ -52,30 +52,6 @@ class AlbumRepository extends ServiceEntityRepository
         return $this->applyFiltersToList($queryBuilder, $filters);
     }
 
-// ...    
-
-    /**
-     * Apply filters to paginated list.
-     *
-     * @param QueryBuilder       $queryBuilder Query builder
-     * @param AlbumListFiltersDto $filters      Filters
-     *
-     * @return QueryBuilder Query builder
-     */
-    private function applyFiltersToList(QueryBuilder $queryBuilder, AlbumListFiltersDto $filters): QueryBuilder
-    {
-        if ($filters->category instanceof Category) {
-            $queryBuilder->andWhere('category = :category')
-                ->setParameter('category', $filters->category);
-        }
-
-        if ($filters->tag instanceof Tag) {
-            $queryBuilder->andWhere('tags IN (:tag)')
-                ->setParameter('tag', $filters->tag);
-        }
-
-        return $queryBuilder;
-    }
 
     /**
      * Count albums by category.
@@ -94,24 +70,6 @@ class AlbumRepository extends ServiceEntityRepository
             ->getQuery()
             ->getSingleScalarResult();
     }
-//
-//    /**
-//     * Count tasks by favorite.
-//     *
-//     * @param Favorite $favorite Favorite
-//     *
-//     * @return int Number of tasks in favorite
-//     */
-//    public function countByFavorite(Favorite $favorite): int
-//    {
-//        $qb = $this->createQueryBuilder('album');
-//
-//        return $qb->select($qb->expr()->countDistinct('album.id'))
-//            ->where('album.favorite = :favorite')
-//            ->setParameter(':favorite', $favorite)
-//            ->getQuery()
-//            ->getSingleScalarResult();
-//    }
 
 
     /**
@@ -134,5 +92,28 @@ class AlbumRepository extends ServiceEntityRepository
     {
         $this->getEntityManager()->remove($album);
         $this->getEntityManager()->flush();
+    }
+
+    /**
+     * Apply filters to paginated list.
+     *
+     * @param QueryBuilder        $queryBuilder Query builder
+     * @param AlbumListFiltersDto $filters      Filters
+     *
+     * @return QueryBuilder Query builder
+     */
+    private function applyFiltersToList(QueryBuilder $queryBuilder, AlbumListFiltersDto $filters): QueryBuilder
+    {
+        if ($filters->category instanceof Category) {
+            $queryBuilder->andWhere('category = :category')
+                ->setParameter('category', $filters->category);
+        }
+
+        if ($filters->tag instanceof Tag) {
+            $queryBuilder->andWhere('tags IN (:tag)')
+                ->setParameter('tag', $filters->tag);
+        }
+
+        return $queryBuilder;
     }
 }

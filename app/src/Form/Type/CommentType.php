@@ -21,10 +21,15 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 class CommentType extends AbstractType
 {
 
+    /**
+     * Security.
+     */
     private Security $security;
 
     /**
      * Constructor.
+     *
+     * @param Security $security Security
      */
     public function __construct(Security $security)
     {

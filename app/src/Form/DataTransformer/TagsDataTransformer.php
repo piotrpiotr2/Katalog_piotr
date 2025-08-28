@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * Tags Data transformer.
+ */
+
 namespace App\Form\DataTransformer;
 
 use App\Entity\Tag;
@@ -15,6 +19,12 @@ use Symfony\Component\Form\DataTransformerInterface;
  */
 class TagsDataTransformer implements DataTransformerInterface
 {
+
+    /**
+     * Constructor.
+     *
+     * @param TagServiceInterface $tagService Tag service interface
+     */
     public function __construct(private readonly TagServiceInterface $tagService)
     {
     }
@@ -23,6 +33,8 @@ class TagsDataTransformer implements DataTransformerInterface
      * Transform a collection of tags into a comma-separated string.
      *
      * @param Collection<int, Tag>|null $value Tags entity collection
+     *
+     * @return string Tags
      */
     public function transform($value): string
     {

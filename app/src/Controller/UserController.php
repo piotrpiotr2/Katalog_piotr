@@ -181,7 +181,7 @@ class UserController extends AbstractController
     #[Route('/profile', name: 'profile', methods: 'GET|PUT')]
     public function profile(Request $request): Response
     {
-        $user=$this->getUser();
+        $user = $this->getUser();
 
         $form = $this->createForm(
             UserType::class,

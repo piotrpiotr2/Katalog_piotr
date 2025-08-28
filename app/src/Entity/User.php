@@ -35,8 +35,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * Email.
-     *
-     * @var string|null
      */
     #[ORM\Column(type: 'string', length: 180, unique: true)]
     #[Assert\NotBlank]
@@ -46,48 +44,80 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * Roles.
      *
-     * @var list<int, string>
+     * @var array<int, string>
      */
     #[ORM\Column(type: 'json')]
     private array $roles = [];
 
     /**
      * Hashed password.
-     *
-     * @var string|null
      */
     #[ORM\Column(type: 'string')]
     #[Assert\NotBlank]
     private ?string $password = null;
 
+    /**
+     * Favorite albums.
+     */
     #[ORM\ManyToMany(targetEntity: Album::class, inversedBy: 'favoritedBy')]
     #[ORM\JoinTable(name: 'user_favorites')]
     private Collection $favoriteAlbums;
 
-
+    /**
+     * Constructor.
+     */
     public function __construct()
     {
         $this->favoriteAlbums = new ArrayCollection();
     }
+
+    /**
+     * Getter for favorite albums.
+     *
+     * @return Collection<int, Album> Favorite albums collection
+     */
     public function getFavoriteAlbums(): Collection
     {
         return $this->favoriteAlbums;
     }
 
+    /**
+     * Add album to favorites.
+     *
+     * @param Album $album Album entity
+     *
+     * @return $this
+     */
     public function addFavoriteAlbum(Album $album): static
     {
         if (!$this->favoriteAlbums->contains($album)) {
             $this->favoriteAlbums->add($album);
         }
+
         return $this;
     }
 
+    /**
+     * Remove album from favorites.
+     *
+     * @param Album $album Album entity
+     *
+     * @return $this
+     */
     public function removeFavoriteAlbum(Album $album): static
     {
         $this->favoriteAlbums->removeElement($album);
+
         return $this;
     }
 
+    /**
+     * Check if album is favorited.
+     *
+     * @param Album $album Album entity
+     *
+     * @return bool True if favorited, false otherwise
+     */
     public function hasFavorited(Album $album): bool
     {
         return $this->favoriteAlbums->contains($album);
@@ -140,7 +170,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      *
      * @see UserInterface
      *
-     * @return list<string>
+     * @return array<int, string> Roles
      */
     public function getRoles(): array
     {
@@ -154,7 +184,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * Setter for roles.
      *
-     * @param list<int, string> $roles Roles
+     * @param array<int, string> $roles Roles
      */
     public function setRoles(array $roles): void
     {
@@ -193,5 +223,4 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
     }
-
 }

@@ -1,10 +1,13 @@
 <?php
 
+/**
+ * Registration controller.
+ */
+
 namespace App\Controller;
 
 use App\Entity\Enum\UserRole;
 use App\Entity\User;
-use App\Form\Type\AlbumType;
 use App\Form\Type\RegistrationFormType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -14,18 +17,29 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
 
+/**
+ * Class RegistrationController.
+ */
 class RegistrationController extends AbstractController
 {
+    /**
+     * Register action.
+     *
+     * @param Request                     $request            HTTP request
+     * @param UserPasswordHasherInterface $userPasswordHasher Password hasher
+     * @param Security                    $security           Security component
+     * @param EntityManagerInterface      $entityManager      Entity manager
+     *
+     * @return Response HTTP response
+     */
     #[Route('/register', name: 'app_register')]
     public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, Security $security, EntityManagerInterface $entityManager): Response
     {
-
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
             $user->setRoles([UserRole::ROLE_USER->value]);
 
             /** @var string $password */
@@ -34,8 +48,6 @@ class RegistrationController extends AbstractController
 
             $entityManager->persist($user);
             $entityManager->flush();
-
-
 
             return $security->login($user, 'form_login', 'main');
         }

@@ -6,7 +6,6 @@
 
 namespace App\Controller;
 
-use App\Dto\AlbumListInputFiltersDto;
 use App\Entity\Album;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -14,15 +13,11 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * Class FavoriteController.
+ */
 class FavoriteController extends AbstractController
 {
-//    #[Route('/favorites', name: 'favorites_list', methods: ['GET'])]
-//    public function toggleFavorite(Album $album, EntityManagerInterface $em): RedirectResponse
-//    {
-//        $pagination = $this->favoriteService->getPaginatedList($page);
-//
-//        return $this->render('favorite/index.html.twig', ['pagination' => $pagination]);
-//    }
     /**
      * Index action.
      *
@@ -32,10 +27,20 @@ class FavoriteController extends AbstractController
     public function favorites(): Response
     {
         $user = $this->getUser();
+
         return $this->render('favorite/index.html.twig', [
             'albums' => $user->getFavoriteAlbums(),
         ]);
     }
+
+    /**
+     * Toggle favorite action.
+     *
+     * @param Album                  $album Album entity
+     * @param EntityManagerInterface $em    Entity manager
+     *
+     * @return RedirectResponse Redirect response
+     */
     #[Route('/album/{id}/favorite', name: 'album_favorite', methods: ['POST'])]
     public function toggleFavorite(Album $album, EntityManagerInterface $em): RedirectResponse
     {
