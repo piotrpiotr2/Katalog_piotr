@@ -24,6 +24,7 @@
                 {{ 'action.back_to_list'|trans }}
             </a>
         </p>
+        {% if is_granted('ROLE_USER') %}
         <form method="post" action="{{ path('album_favorite', {id: album.id}) }}">
             <button type="submit">
                 {% if user and user.hasFavorited(album) %}
@@ -33,6 +34,7 @@
                 {% endif %}
             </button>
         </form>
+        {% endif %}
         <br>
         <h2>{{ 'title.album_comment'|trans }}</h2>
         {{ form_start(form) }}

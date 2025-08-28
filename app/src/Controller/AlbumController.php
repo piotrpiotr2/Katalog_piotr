@@ -104,6 +104,8 @@ class AlbumController extends AbstractController
     {
 
         $comment = new Comment();
+        $user = null;
+
         if ($this->getUser()) {
             /** @var User $user */
             $user = $this->getUser();

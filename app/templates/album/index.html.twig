@@ -12,9 +12,11 @@
             {{ knp_pagination_render(pagination) }}
         </div>
 
-        <a class="btn btn-outline-primary" style="float: right" href="{{ url('user_favorites') }}" title="{{ 'action.listFavorites'|trans }}">
-            {{ 'action.listFavorites'|trans }}
-        </a>
+        {% if is_granted('ROLE_USER') %}
+            <a class="btn btn-outline-primary" style="float: right" href="{{ url('user_favorites') }}" title="{{ 'action.listFavorites'|trans }}">
+                {{ 'action.listFavorites'|trans }}
+            </a>
+        {% endif %}
 
         <table class="table table-striped">
             <thead>
