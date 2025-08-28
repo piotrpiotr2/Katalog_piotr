@@ -6,8 +6,11 @@
 
 namespace App\Service;
 
+use App\Dto\AlbumListFiltersDto;
+use App\Dto\AlbumListInputFiltersDto;
 use App\Entity\Album;
 use App\Repository\AlbumRepository;
+use Knp\Bundle\PaginatorBundle\Pagination\SlidingPagination;
 use Knp\Component\Pager\Pagination\PaginationInterface;
 use Knp\Component\Pager\PaginatorInterface;
 
@@ -30,31 +33,51 @@ class AlbumService implements AlbumServiceInterface
     /**
      * Constructor.
      *
-     * @param AlbumRepository     $albumRepository Album repository
-     * @param PaginatorInterface $paginator      Paginator
+     * @param CategoryServiceInterface $categoryService Category service
+     * @param PaginatorInterface       $paginator       Paginator
+     * @param TagServiceInterface      $tagService      Tag service
+     * @param AlbumRepository           $albumRepository  Album repository
      */
-    public function __construct(private readonly AlbumRepository $albumRepository, private readonly PaginatorInterface $paginator)
+    public function __construct(private readonly CategoryServiceInterface $categoryService, private readonly PaginatorInterface $paginator, private readonly TagServiceInterface $tagService, private readonly AlbumRepository $albumRepository)
     {
     }
 
     /**
      * Get paginated list.
      *
-     * @param int $page Page number
+     * @param int                     $page    Page number
+     * @param AlbumListInputFiltersDto $filters Filters
      *
-     * @return PaginationInterface Paginated list
+     * @return PaginationInterface< SlidingPagination> Paginated list
      */
-    public function getPaginatedList(int $page): PaginationInterface
+    public function getPaginatedList(int $page, AlbumListInputFiltersDto $filters): PaginationInterface
     {
+        $filters = $this->prepareFilters($filters);
+
         return $this->paginator->paginate(
-            $this->albumRepository->queryAll(),
+            $this->albumRepository->queryAll($filters),
             $page,
             self::PAGINATOR_ITEMS_PER_PAGE,
             [
-                'sortFieldAllowList' => ['album.id', 'album.createdAt', 'album.updatedAt', 'album.title'],
+                'sortFieldAllowList' => ['album.id', 'album.createdAt', 'album.updatedAt', 'album.title', 'category.title'],
                 'defaultSortFieldName' => 'album.updatedAt',
                 'defaultSortDirection' => 'desc',
             ]
+        );
+    }
+    
+    /**
+     * Prepare filters for the albums list.
+     *
+     * @param AlbumListInputFiltersDto $filters Raw filters from request
+     *
+     * @return AlbumListFiltersDto Result filters
+     */
+    private function prepareFilters(AlbumListInputFiltersDto $filters): AlbumListFiltersDto
+    {
+        return new AlbumListFiltersDto(
+            null !== $filters->categoryId ? $this->categoryService->findOneById($filters->categoryId) : null,
+            null !== $filters->tagId ? $this->tagService->findOneById($filters->tagId) : null
         );
     }
 

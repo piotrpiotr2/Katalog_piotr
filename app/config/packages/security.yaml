@@ -19,7 +19,7 @@ security:
             form_login:
                 login_path: app_login
                 check_path: app_login
-                default_target_path: task_index
+                default_target_path: album_index
                 enable_csrf: true
             logout:
                 path: app_logout
@@ -41,6 +41,13 @@ security:
         # - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
         - { path: ^/login, roles: PUBLIC_ACCESS }
+        - { path: ^/register, roles: PUBLIC_ACCESS }
+        - { path: ^/album, roles: PUBLIC_ACCESS }
+        - { path: ^/admin, roles: ROLE_ADMIN }
+        - { path: ^/profile, roles: ROLE_USER }
+        - { path: ^/favorites, roles: ROLE_USER }
+        - { path: ^/user, roles: ROLE_ADMIN }
+        - { path: ^/profile, roles: ROLE_USER }
         - { path: ^/, roles: ROLE_USER }
 
 when@test:

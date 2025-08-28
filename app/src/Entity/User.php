@@ -9,9 +9,12 @@ namespace App\Entity;
 use App\Entity\Enum\UserRole;
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 /**
  * Class User.
@@ -19,6 +22,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: 'users')]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
+#[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     /**
@@ -55,6 +59,39 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'string')]
     #[Assert\NotBlank]
     private ?string $password = null;
+
+    #[ORM\ManyToMany(targetEntity: Album::class, inversedBy: 'favoritedBy')]
+    #[ORM\JoinTable(name: 'user_favorites')]
+    private Collection $favoriteAlbums;
+
+
+    public function __construct()
+    {
+        $this->favoriteAlbums = new ArrayCollection();
+    }
+    public function getFavoriteAlbums(): Collection
+    {
+        return $this->favoriteAlbums;
+    }
+
+    public function addFavoriteAlbum(Album $album): static
+    {
+        if (!$this->favoriteAlbums->contains($album)) {
+            $this->favoriteAlbums->add($album);
+        }
+        return $this;
+    }
+
+    public function removeFavoriteAlbum(Album $album): static
+    {
+        $this->favoriteAlbums->removeElement($album);
+        return $this;
+    }
+
+    public function hasFavorited(Album $album): bool
+    {
+        return $this->favoriteAlbums->contains($album);
+    }
 
     /**
      * Getter for id.
@@ -156,4 +193,5 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
     }
+
 }

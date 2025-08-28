@@ -3,6 +3,10 @@
 {% block title %}Log in!{% endblock %}
 
 {% block body %}
+    <div>
+        <a href="{{ url('app_register') }}">{{ 'action.register'|trans }}</a>
+    </div>
+
     <form method="post" action="{{ path('app_login') }}">
         {% if error %}
             <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>

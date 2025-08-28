@@ -1,4 +1,7 @@
 .idea
+.env
+.env.dev
+.env.test
 var
 vendor
 .php_cs.cache

@@ -123,6 +123,139 @@
         <source>action.password</source>
         <target>Password</target>
       </trans-unit>
+
+      <trans-unit id="validators.Please enter a password">
+        <source>Please enter a password</source>
+        <target>Please enter a password</target>
+      </trans-unit>
+      <trans-unit id="validators.Your password should be at least 6 characters">
+        <source>Your password should be at least 6 characters</source>
+        <target>Your password should be at least 6 characters</target>
+      </trans-unit>
+      <trans-unit id="validators.There is already an account with this email">
+        <source>There is already an account with this email</source>
+        <target>There is already an account with this email</target>
+      </trans-unit>
+      <trans-unit id="message.comment_created_successfully">
+        <source>message.comment_created_successfully</source>
+        <target>Comment created successfully</target>
+      </trans-unit>
+      <trans-unit id="message.you_cant_delete_comment">
+        <source>message.you_cant_delete_comment</source>
+        <target>You can't delete this comment</target>
+      </trans-unit>
+      <trans-unit id="title.comment_delete">
+        <source>title.comment_delete</source>
+        <target>Delete Comment</target>
+      </trans-unit>
+      <trans-unit id="title.register">
+        <source>title.register</source>
+        <target>Register</target>
+      </trans-unit>
+      <trans-unit id="title.category_list">
+        <source>title.category_list</source>
+        <target>Categories List</target>
+      </trans-unit>
+      <trans-unit id="action.edit">
+        <source>action.edit</source>
+        <target>Edit</target>
+      </trans-unit>
+      <trans-unit id="title.category_details">
+        <source>title.category_details</source>
+        <target>Category Details</target>
+      </trans-unit>
+      <trans-unit id="action.register">
+        <source>action.register</source>
+        <target>Register</target>
+      </trans-unit>
+      <trans-unit id="title.favorite_albums">
+        <source>title.favorite_albums</source>
+        <target>Favorite Albums</target>
+      </trans-unit>
+      <trans-unit id="label.tag">
+        <source>label.tag</source>
+        <target>Tag</target>
+      </trans-unit>
+      <trans-unit id="action.remove_favorite">
+        <source>action.remove_favorite</source>
+        <target>Remove Favorite</target>
+      </trans-unit>
+      <trans-unit id="message.no_favorites">
+        <source>message.no_favorites</source>
+        <target>No favorites yet</target>
+      </trans-unit>
+      <trans-unit id="title.user_edit">
+        <source>title.user_edit</source>
+        <target>Edit User</target>
+      </trans-unit>
+      <trans-unit id="title.user_edit_self">
+        <source>title.user_edit_self</source>
+        <target>Edit Profile</target>
+      </trans-unit>
+      <trans-unit id="title.user_delete">
+        <source>title.user_delete</source>
+        <target>Delete User</target>
+      </trans-unit>
+      <trans-unit id="title.user_list">
+        <source>title.user_list</source>
+        <target>Users List</target>
+      </trans-unit>
+      <trans-unit id="label.email">
+        <source>label.email</source>
+        <target>Email</target>
+      </trans-unit>
+      <trans-unit id="label.roles">
+        <source>label.roles</source>
+        <target>Roles</target>
+      </trans-unit>
+      <trans-unit id="title.user_details">
+        <source>title.user_details</source>
+        <target>User Details</target>
+      </trans-unit>
+      <trans-unit id="title.user_create">
+        <source>title.user_create</source>
+        <target>Create User</target>
+      </trans-unit>
+      <trans-unit id="title.album_edit">
+        <source>title.album_edit</source>
+        <target>Edit Album</target>
+      </trans-unit>
+      <trans-unit id="title.album_delete">
+        <source>title.album_delete</source>
+        <target>Delete Album</target>
+      </trans-unit>
+      <trans-unit id="action.listFavorites">
+        <source>action.listFavorites</source>
+        <target>My Favorites</target>
+      </trans-unit>
+      <trans-unit id="action.create">
+        <source>action.create</source>
+        <target>Create</target>
+      </trans-unit>
+      <trans-unit id="action.unfavorite">
+        <source>action.unfavorite</source>
+        <target>Unfavorite</target>
+      </trans-unit>
+      <trans-unit id="action.favorite">
+        <source>action.favorite</source>
+        <target>Favorite</target>
+      </trans-unit>
+      <trans-unit id="title.album_comment">
+        <source>title.album_comment</source>
+        <target>Album Comments</target>
+      </trans-unit>
+      <trans-unit id="action.post">
+        <source>action.post</source>
+        <target>Post</target>
+      </trans-unit>
+      <trans-unit id="title.comments">
+        <source>title.comments</source>
+        <target>Comments</target>
+      </trans-unit>
+      <trans-unit id="title.album_create">
+        <source>title.album_create</source>
+        <target>Create Album</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

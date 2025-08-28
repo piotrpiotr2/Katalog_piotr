@@ -6,6 +6,7 @@
 
 namespace App\Service;
 
+use App\Dto\AlbumListInputFiltersDto;
 use App\Entity\Album;
 use Knp\Component\Pager\Pagination\PaginationInterface;
 
@@ -21,7 +22,7 @@ interface AlbumServiceInterface
      *
      * @return PaginationInterface Paginated list
      */
-    public function getPaginatedList(int $page): PaginationInterface;
+    public function getPaginatedList(int $page, AlbumListInputFiltersDto $filters): PaginationInterface;
 
     /**
      * Save entity.

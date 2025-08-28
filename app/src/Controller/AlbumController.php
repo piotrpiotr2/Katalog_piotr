@@ -7,15 +7,23 @@
 namespace App\Controller;
 
 use App\Entity\Album;
+use App\Entity\Comment;
+use App\Entity\User;
 use App\Form\Type\AlbumType;
+use App\Form\Type\CommentType;
+use App\Resolver\AlbumListInputFiltersDtoResolver;
+use App\Service\CommentServiceInterface;
 use App\Service\AlbumServiceInterface;
+use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
+use Symfony\Component\HttpKernel\Attribute\MapQueryString;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use App\Dto\AlbumListInputFiltersDto;
 
 /**
  * Class AlbumController.
@@ -24,19 +32,40 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class AlbumController extends AbstractController
 {
     /**
+     * Album Service.
+     */
+    private AlbumServiceInterface $albumService;
+
+    /**
+     * Translator.
+     */
+    private TranslatorInterface $translator;
+
+    /**
+     * Comment Service.
+     */
+    private CommentServiceInterface $commentService;
+
+
+    /**
      * Constructor.
      *
      * @param AlbumServiceInterface $albumService Album service
-     * @param TranslatorInterface  $translator  Translator
+     * @param CommentServiceInterface $commentService Comment Service
+     * @param TranslatorInterface $translator Translator
      */
-    public function __construct(private readonly AlbumServiceInterface $albumService, private readonly TranslatorInterface $translator)
+    public function __construct(AlbumServiceInterface $albumService, TranslatorInterface $translator, CommentServiceInterface $commentService)
     {
+        $this->albumService = $albumService;
+        $this->commentService = $commentService;
+        $this->translator = $translator;
     }
 
     /**
      * Index action.
      *
-     * @param int $page Page number
+     * @param AlbumListInputFiltersDto $filters Input filters
+     * @param int                     $page    Page number
      *
      * @return Response HTTP response
      */
@@ -44,9 +73,13 @@ class AlbumController extends AbstractController
         name: 'album_index',
         methods: 'GET'
     )]
-    public function index(#[MapQueryParameter] int $page = 1): Response
+    public function index(#[MapQueryString(resolver: AlbumListInputFiltersDtoResolver::class)] AlbumListInputFiltersDto $filters, #[MapQueryParameter] int $page = 1): Response
     {
-        $pagination = $this->albumService->getPaginatedList($page);
+
+        $pagination = $this->albumService->getPaginatedList(
+            $page,
+            $filters
+        );
 
         return $this->render('album/index.html.twig', ['pagination' => $pagination]);
     }
@@ -55,22 +88,62 @@ class AlbumController extends AbstractController
      * View action.
      *
      * @param Album $album Album entity
+     * @param Request $request HTTP request
      *
      * @return Response HTTP response
+     *
+     * @throws NonUniqueResultException
      */
     #[Route(
         '/{id}',
         name: 'album_view',
         requirements: ['id' => '[1-9]\d*'],
-        methods: 'GET'
+        methods: ['GET', 'POST']
     )]
-    public function view(Album $album): Response
+    public function view(Album $album, Request $request): Response
     {
+
+        $comment = new Comment();
+        if ($this->getUser()) {
+            /** @var User $user */
+            $user = $this->getUser();
+            $comment->setUser($user);
+        }
+
+        $comment->setAlbum($album);
+
+        $form = $this->createForm(
+            CommentType::class,
+            $comment,
+            [
+                'method' => 'POST',
+                'action' => $this->generateUrl('album_view', ['id' => $album->getId()]),
+            ]
+        );
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+                $this->commentService->Save($comment);
+
+                $this->addFlash(
+                    'success',
+                    $this->translator->trans('message.comment_created_successfully')
+                );
+            return $this->redirectToRoute('album_view', ['id' => $album->getId()]);
+        }
+            $comment = $this->commentService->findBy([$album->getId()]);
+
         return $this->render(
             'album/view.html.twig',
-            ['album' => $album]
+            [
+                'album' => $album,
+                'form' => $form->createView(),
+                'comment' => $comment,
+                'user' => $user,
+            ]
         );
     }
+
 
     /**
      * Create action.

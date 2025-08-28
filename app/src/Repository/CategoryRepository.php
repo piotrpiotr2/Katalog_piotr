@@ -12,7 +12,10 @@ use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * Class CategoryRepository.
+ * @method Category|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Category|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Category[]    findAll()
+ * @method Category[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  *
  * @extends ServiceEntityRepository<Category>
  */
@@ -60,5 +63,6 @@ class CategoryRepository extends ServiceEntityRepository
         $this->getEntityManager()->remove($category);
         $this->getEntityManager()->flush();
     }
+        
 
 }

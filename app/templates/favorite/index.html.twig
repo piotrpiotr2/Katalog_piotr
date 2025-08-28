@@ -1,0 +1,68 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ 'title.favorite_albums'|trans }}
+{% endblock %}
+
+{% block body %}
+    <h1>{{ 'title.favorite_albums'|trans }}</h1>
+
+    {% if albums is defined and albums|length %}
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>{{ 'label.id'|trans }}</th>
+                <th>{{ 'label.created_at'|trans }}</th>
+                <th>{{ 'label.updated_at'|trans }}</th>
+                <th>{{ 'label.title'|trans }}</th>
+                <th>{{ 'label_category'|trans }}</th>
+                <th>{{ 'label.tag'|trans }}</th>
+                <th>{{ 'label.actions'|trans }}</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for album in albums %}
+                <tr>
+                    <td>{{ album.id }}</td>
+                    <td>{{ album.createdAt|format_date('long') }}</td>
+                    <td>{{ album.updatedAt|format_date('long') }}</td>
+                    <td>{{ album.title }}</td>
+                    <td>
+                        <a class="btn btn-outline-primary"
+                           href="{{ url('album_index', {'categoryId' : album.category.id}) }}"
+                           title="{{ album.category.title }}">
+                            {{ album.category.title }}
+                        </a>
+                    </td>
+                    <td>
+                        {% if album.tags is defined and album.tags|length %}
+                            {% for tag in album.tags %}
+                                <a class="btn btn-outline-primary"
+                                   href="{{ url('album_index', {'tagId' : tag.id}) }}"
+                                   title="{{ tag.title }}">
+                                    {{ tag.title }}
+                                </a>
+                            {% endfor %}
+                        {% else %}
+                            &nbsp;
+                        {% endif %}
+                    </td>
+                    <td class="action-links">
+                        <a class="btn btn-outline-primary" href="{{ url('album_view', {id: album.id}) }}" title="{{ 'action.view'|trans }}">
+                            {{ 'action.view'|trans }}
+                        </a>
+
+                        <form method="post" action="{{ path('album_favorite', {id: album.id}) }}" style="display:inline">
+                            <button class="btn btn-outline-danger" type="submit" title="{{ 'action.remove_favorite'|trans }}">
+                                {{ 'action.remove_favorite'|trans }}
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>{{ 'message.no_favorites'|trans }}</p>
+    {% endif %}
+{% endblock %}

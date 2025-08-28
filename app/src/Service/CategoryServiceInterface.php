@@ -7,6 +7,7 @@
 namespace App\Service;
 
 use App\Entity\Category;
+use Doctrine\ORM\NonUniqueResultException;
 use Knp\Component\Pager\Pagination\PaginationInterface;
 
 /**
@@ -36,4 +37,15 @@ interface CategoryServiceInterface
      * @param Category $category Category entity
      */
     public function delete(Category $category): void;
+
+    /**
+     * Find by id.
+     *
+     * @param int $id Category id
+     *
+     * @return Category|null Category entity
+     *
+     * @throws NonUniqueResultException
+     */
+    public function findOneById(int $id): ?Category;
 }

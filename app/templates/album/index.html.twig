@@ -12,6 +12,10 @@
             {{ knp_pagination_render(pagination) }}
         </div>
 
+        <a class="btn btn-outline-primary" style="float: right" href="{{ url('user_favorites') }}" title="{{ 'action.listFavorites'|trans }}">
+            {{ 'action.listFavorites'|trans }}
+        </a>
+
         <table class="table table-striped">
             <thead>
             <tr>
@@ -20,6 +24,7 @@
                 <th>{{ knp_pagination_sortable(pagination, 'label.updated_at'|trans, 'album.updatedAt') }}</th>
                 <th>{{ knp_pagination_sortable(pagination, 'label.title'|trans, 'album.title') }}</th>
                 <th>{{ knp_pagination_sortable(pagination, 'label_category'|trans, 'category.title') }}</th>
+                <th>{{ 'label.tag'|trans }}</th>
                 <th>{{ 'label.actions'|trans }}</th>
             </tr>
             </thead>
@@ -30,20 +35,55 @@
                     <td>{{ album.createdAt|format_date('long') }}</td>
                     <td>{{ album.updatedAt|format_date('long') }}</td>
                     <td>{{ album.title }}</td>
-                    <td>{{ album.category.title }}</td>
                     <td>
-                        <a href="{{ url('album_view', {id: album.id}) }}" title="{{ 'action.view'|trans }}">
+                        <a class="btn btn-outline-primary"
+                           href="{{ url('album_index', {'categoryId' : album.category.id}) }}"
+                           title="{{ album.category.title }}">
+                            {{ album.category.title }}
+                        </a>
+                    </td>
+                    <td>
+                        {% if album.tags is defined and album.tags|length %}
+                            {% for tag in album.tags %}
+                                <a class="btn btn-outline-primary"
+                                   href="{{ url('album_index', {'tagId' : tag.id}) }}"
+                                   title="{{ tag.title }}">
+                                    {{ tag.title }}
+                                </a>
+                            {% endfor %}
+                        {% else %}
+                            &nbsp;
+                        {% endif %}
+                    </td>
+                    <td  class="action-links">
+                        <a class="btn btn-outline-primary" href="{{ url('album_view', {id: album.id}) }}" title="{{ 'action.view'|trans }}">
                             {{ 'action.view'|trans }}
                         </a>
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <a class="btn btn-outline-success" href="{{ url('album_edit', {id: album.id}) }}" title="{{ 'action.edit'|trans }}">
+                                {{ 'action.edit'|trans }}
+                            </a>
+                            <a class="btn btn-outline-danger" href="{{ url('album_delete', {id: album.id}) }}" title="{{ 'action.delete'|trans }}">
+                                {{ 'action.delete'|trans }}
+                            </a>
+                        {% endif %}
                     </td>
                 </tr>
             {% endfor %}
             </tbody>
         </table>
 
+        {% if is_granted('ROLE_ADMIN') %}
+            <a class="btn btn-outline-primary" style="float: right" href="{{ url('album_create') }}" title="{{ 'action.create'|trans }}">
+                {{ 'action.create'|trans }}
+            </a>
+        {% endif %}
+
         <div class="navigation text-center">
             {{ knp_pagination_render(pagination) }}
         </div>
+
+
 
     {% else %}
         <p>
