@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Album list filters DTO.
  */

@@ -13,27 +13,19 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 /**
  * Class CommentType.
  */
 class CommentType extends AbstractType
 {
-
-    /**
-     * Security.
-     */
-    private Security $security;
-
     /**
      * Constructor.
      *
      * @param Security $security Security
      */
-    public function __construct(Security $security)
+    public function __construct(private readonly Security $security)
     {
-        $this->security = $security;
     }
 
     /**
@@ -52,7 +44,7 @@ class CommentType extends AbstractType
         /** @var User $author */
         $author = $options['author'];
 
-        if (!$this->security->getUser()) {
+        if (!$this->security->getUser() instanceof \Symfony\Component\Security\Core\User\UserInterface) {
             $builder
                 ->add(
                     'guestNickname',

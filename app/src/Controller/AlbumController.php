@@ -15,6 +15,7 @@ use App\Resolver\AlbumListInputFiltersDtoResolver;
 use App\Service\CommentServiceInterface;
 use App\Service\AlbumServiceInterface;
 use Doctrine\ORM\NonUniqueResultException;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\HttpFoundation\Request;
@@ -28,25 +29,8 @@ use App\Dto\AlbumListInputFiltersDto;
 /**
  * Class AlbumController.
  */
-#[Route('/album')]
 class AlbumController extends AbstractController
 {
-    /**
-     * Album Service.
-     */
-    private AlbumServiceInterface $albumService;
-
-    /**
-     * Translator.
-     */
-    private TranslatorInterface $translator;
-
-    /**
-     * Comment Service.
-     */
-    private CommentServiceInterface $commentService;
-
-
     /**
      * Constructor.
      *
@@ -54,13 +38,9 @@ class AlbumController extends AbstractController
      * @param CommentServiceInterface $commentService Comment Service
      * @param TranslatorInterface     $translator     Translator
      */
-    public function __construct(AlbumServiceInterface $albumService, CommentServiceInterface $commentService, TranslatorInterface $translator)
+    public function __construct(private readonly AlbumServiceInterface $albumService, private readonly CommentServiceInterface $commentService, private readonly TranslatorInterface $translator)
     {
-        $this->albumService = $albumService;
-        $this->commentService = $commentService;
-        $this->translator = $translator;
     }
-
     /**
      * Index action.
      *
@@ -83,30 +63,29 @@ class AlbumController extends AbstractController
 
         return $this->render('album/index.html.twig', ['pagination' => $pagination]);
     }
-
     /**
      * View action.
      *
-     * @param Album   $album   Album entity
      * @param Request $request HTTP request
+     * @param Album   $album   Album entity
      *
      * @return Response HTTP response
      *
      * @throws NonUniqueResultException
      */
     #[Route(
-        '/{id}',
+        '/album/{id}',
         name: 'album_view',
         requirements: ['id' => '[1-9]\d*'],
         methods: ['GET', 'POST']
     )]
-    public function view(Album $album, Request $request): Response
+    public function view(Request $request, #[MapEntity(id: 'id')] Album $album): Response
     {
 
         $comment = new Comment();
         $user = null;
 
-        if ($this->getUser()) {
+        if ($this->getUser() instanceof \Symfony\Component\Security\Core\User\UserInterface) {
             /** @var User $user */
             $user = $this->getUser();
             $comment->setUser($user);
@@ -125,16 +104,16 @@ class AlbumController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-                $this->commentService->Save($comment);
+            $this->commentService->Save($comment);
 
-                $this->addFlash(
-                    'success',
-                    $this->translator->trans('message.comment_created_successfully')
-                );
+            $this->addFlash(
+                'success',
+                $this->translator->trans('message.comment_created_successfully')
+            );
 
             return $this->redirectToRoute('album_view', ['id' => $album->getId()]);
         }
-            $comment = $this->commentService->findBy([$album->getId()]);
+        $comment = $this->commentService->findBy([$album->getId()]);
 
         return $this->render(
             'album/view.html.twig',
@@ -146,8 +125,6 @@ class AlbumController extends AbstractController
             ]
         );
     }
-
-
     /**
      * Create action.
      *
@@ -156,7 +133,7 @@ class AlbumController extends AbstractController
      * @return Response HTTP response
      */
     #[Route(
-        '/create',
+        '/album/create',
         name: 'album_create',
         methods: 'GET|POST',
     )]
@@ -182,7 +159,6 @@ class AlbumController extends AbstractController
             ['form' => $form->createView()]
         );
     }
-
     /**
      * Edit action.
      *
@@ -192,12 +168,12 @@ class AlbumController extends AbstractController
      * @return Response HTTP response
      */
     #[Route(
-        '/{id}/edit',
+        '/album/{id}/edit',
         name: 'album_edit',
         requirements: ['id' => '[1-9]\d*'],
         methods: 'GET|PUT'
     )]
-    public function edit(Request $request, Album $album): Response
+    public function edit(Request $request, #[MapEntity(id: 'id')] Album $album): Response
     {
         $form = $this->createForm(
             AlbumType::class,
@@ -228,7 +204,6 @@ class AlbumController extends AbstractController
             ]
         );
     }
-
     /**
      * Delete action.
      *
@@ -238,12 +213,12 @@ class AlbumController extends AbstractController
      * @return Response HTTP response
      */
     #[Route(
-        '/{id}/delete',
+        '/album/{id}/delete',
         name: 'album_delete',
         requirements: ['id' => '[1-9]\d*'],
         methods: 'GET|DELETE'
     )]
-    public function delete(Request $request, Album $album): Response
+    public function delete(Request $request, #[MapEntity(id: 'id')] Album $album): Response
     {
         $form = $this->createForm(FormType::class, $album, [
             'method' => 'DELETE',

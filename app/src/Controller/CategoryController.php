@@ -9,6 +9,7 @@ namespace App\Controller;
 use App\Entity\Category;
 use App\Form\Type\CategoryType;
 use App\Service\CategoryServiceInterface;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,7 +21,6 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 /**
  * Class CategoryController.
  */
-#[Route('/category')]
 class CategoryController extends AbstractController
 {
     /**
@@ -32,7 +32,6 @@ class CategoryController extends AbstractController
     public function __construct(private readonly CategoryServiceInterface $categoryService, private readonly TranslatorInterface $translator)
     {
     }
-
     /**
      * Index action.
      *
@@ -50,7 +49,6 @@ class CategoryController extends AbstractController
 
         return $this->render('category/index.html.twig', ['pagination' => $pagination]);
     }
-
     /**
      * View action.
      *
@@ -59,19 +57,18 @@ class CategoryController extends AbstractController
      * @return Response HTTP response
      */
     #[Route(
-        '/{id}',
+        '/category/{id}',
         name: 'category_view',
         requirements: ['id' => '[1-9]\d*'],
         methods: 'GET'
     )]
-    public function view(Category $category): Response
+    public function view(#[MapEntity(id: 'id')] Category $category): Response
     {
         return $this->render(
             'category/view.html.twig',
             ['category' => $category]
         );
     }
-
     /**
      * Create action.
      *
@@ -80,7 +77,7 @@ class CategoryController extends AbstractController
      * @return Response HTTP response
      */
     #[Route(
-        '/create',
+        '/category/create',
         name: 'category_create',
         methods: 'GET|POST'
     )]
@@ -106,7 +103,6 @@ class CategoryController extends AbstractController
             ['form' => $form->createView()]
         );
     }
-
     /**
      * Edit action.
      *
@@ -116,12 +112,12 @@ class CategoryController extends AbstractController
      * @return Response HTTP response
      */
     #[Route(
-        '/{id}/edit',
+        '/category/{id}/edit',
         name: 'category_edit',
         requirements: ['id' => '[1-9]\d*'],
         methods: 'GET|PUT'
     )]
-    public function edit(Request $request, Category $category): Response
+    public function edit(Request $request, #[MapEntity(id: 'id')] Category $category): Response
     {
         $form = $this->createForm(
             CategoryType::class,
@@ -152,7 +148,6 @@ class CategoryController extends AbstractController
             ]
         );
     }
-
     /**
      * Delete action.
      *
@@ -162,21 +157,14 @@ class CategoryController extends AbstractController
      * @return Response HTTP response
      */
     #[Route(
-        '/{id}/delete',
+        '/category/{id}/delete',
         name: 'category_delete',
         requirements: ['id' => '[1-9]\d*'],
         methods: 'GET|DELETE'
     )]
-    public function delete(Request $request, Category $category): Response
+    public function delete(Request $request, #[MapEntity(id: 'id')] Category $category): Response
     {
-        if (!$this->categoryService->canBeDeleted($category)) {
-            $this->addFlash(
-                'warning',
-                $this->translator->trans('message.category_contains_tasks')
-            );
 
-            return $this->redirectToRoute('category_index');
-        }
 
         $form = $this->createForm(FormType::class, $category, [
             'method' => 'DELETE',

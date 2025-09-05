@@ -41,7 +41,6 @@ class TagRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('tag');
     }
 
-
     /**
      * Save entity.
      *

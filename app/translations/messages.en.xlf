@@ -124,21 +124,25 @@
         <target>Password</target>
       </trans-unit>
 
-      <trans-unit id="validators.Please enter a password">
-        <source>Please enter a password</source>
-        <target>Please enter a password</target>
-      </trans-unit>
-      <trans-unit id="validators.Your password should be at least 6 characters">
-        <source>Your password should be at least 6 characters</source>
-        <target>Your password should be at least 6 characters</target>
-      </trans-unit>
-      <trans-unit id="validators.There is already an account with this email">
-        <source>There is already an account with this email</source>
-        <target>There is already an account with this email</target>
-      </trans-unit>
       <trans-unit id="message.comment_created_successfully">
         <source>message.comment_created_successfully</source>
         <target>Comment created successfully</target>
+      </trans-unit>
+    <trans-unit id="message.AddedToFavorites">
+      <source>message.AddedToFavorites</source>
+      <target>Album added to favorites</target>
+    </trans-unit>
+      <trans-unit id="Password">
+          <source>Password</source>
+          <target>Password</target>
+      </trans-unit>
+      <trans-unit id="label.none">
+        <source>label.none</source>
+        <target>None</target>
+      </trans-unit>
+      <trans-unit id="label.role_admin">
+        <source>label.role_admin</source>
+        <target>Admin role</target>
       </trans-unit>
       <trans-unit id="message.you_cant_delete_comment">
         <source>message.you_cant_delete_comment</source>
@@ -255,6 +259,30 @@
       <trans-unit id="title.album_create">
         <source>title.album_create</source>
         <target>Create Album</target>
+      </trans-unit>
+      <trans-unit id="validators.password_required" datatype="html">
+        <source>Please enter a password</source>
+        <target>Please enter a password</target>
+      </trans-unit>
+      <trans-unit id="validators.password_minlength" datatype="html">
+        <source>Your password should be at least 6 characters</source>
+        <target>Your password should be at least 6 characters</target>
+      </trans-unit>
+      <trans-unit id="validators.email_exists" datatype="html">
+        <source>There is already an account with this email</source>
+        <target>There is already an account with this email</target>
+      </trans-unit>
+      <trans-unit id="messages.action.album_index" datatype="html">
+        <source>action.album_index</source>
+        <target>action.album_index</target>
+      </trans-unit>
+      <trans-unit id="messages.action.listUsers" datatype="html">
+        <source>action.listUsers</source>
+        <target>action.listUsers</target>
+      </trans-unit>
+      <trans-unit id="messages.action.listCategories" datatype="html">
+        <source>action.listCategories</source>
+        <target>action.listCategories</target>
       </trans-unit>
     </body>
   </file>

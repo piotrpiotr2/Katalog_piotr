@@ -8,15 +8,25 @@
     <h1>{{ 'title.album_list'|trans }}</h1>
     {% if pagination is defined and pagination.items|length %}
 
-        <div class="navigation text-center">
-            {{ knp_pagination_render(pagination) }}
-        </div>
 
         {% if is_granted('ROLE_USER') %}
             <a class="btn btn-outline-primary" style="float: right" href="{{ url('user_favorites') }}" title="{{ 'action.listFavorites'|trans }}">
                 {{ 'action.listFavorites'|trans }}
             </a>
         {% endif %}
+
+        {% if is_granted('ROLE_ADMIN') %}
+            <a class="btn btn-outline-primary" style="float: right; margin-inline: 12px" href="{{ url('user_index') }}" title="{{ 'action.listUsers'|trans }}">
+                {{ 'action.listUsers'|trans }}
+            </a>
+            <a class="btn btn-outline-primary" style="float: right;" href="{{ url('category_index') }}" title="{{ 'action.listCategories'|trans }}">
+                {{ 'action.listCategories'|trans }}
+            </a>
+        {% endif %}
+
+        <div class="navigation text-center">
+            {{ knp_pagination_render(pagination) }}
+        </div>
 
         <table class="table table-striped">
             <thead>
@@ -57,7 +67,7 @@
                             &nbsp;
                         {% endif %}
                     </td>
-                    <td  class="action-links">
+                    <td  class="action-links" style="display: flex; flex-direction: column;">
                         <a class="btn btn-outline-primary" href="{{ url('album_view', {id: album.id}) }}" title="{{ 'action.view'|trans }}">
                             {{ 'action.view'|trans }}
                         </a>

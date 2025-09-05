@@ -41,7 +41,6 @@ class CategoryRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('category');
     }
 
-
     /**
      * Save entity.
      *

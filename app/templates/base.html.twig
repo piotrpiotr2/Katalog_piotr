@@ -17,17 +17,21 @@
 </head>
 <body>
 <main role="main" class="container-fluid">
-    <div class="container-fluid">
+    <div class="container-fluid" style="padding-top: 5px;">
         {% include 'default/_flash_messages.html.twig' %}
         {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-            <div>{{ app.user.email }}</div>
-            <div>
-                <a href="{{ url('app_logout') }}">{{ 'action.logout'|trans }}</a>
+{#            <div>{{ app.user.email }}</div>#}
+            <a href="{{ url('profile') }}" style="display: inline">{{ app.user.email }}</a>
+            <div style="display: inline">
+                <p style="display: inline; margin-inline: 7px;"> | </p>
+                <a href="{{ url('app_logout') }}" >{{ 'action.logout'|trans }}</a>
             </div>
         {% else %}
-            <div>
-                <a href="{{ url('app_login') }}">{{ 'action.login'|trans }}</a>
-            </div>
+            {% if app.request.attributes.get('_route') != 'app_login' %}
+                <div style="margin-bottom: 10px">
+                    <a href="{{ url('app_login') }}">{{ 'action.login'|trans }}</a>
+                </div>
+            {% endif %}
         {% endif %}
         {% block body %}{% endblock %}
     </div>

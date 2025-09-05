@@ -7,11 +7,14 @@
 namespace App\Controller;
 
 use App\Entity\Album;
+use App\Service\UserServiceInterface;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Class FavoriteController.
@@ -19,11 +22,21 @@ use Symfony\Component\Routing\Annotation\Route;
 class FavoriteController extends AbstractController
 {
     /**
+     * Constructor.
+     *
+     * @param UserServiceInterface $userService User Service
+     * @param TranslatorInterface  $translator  Translator
+     */
+    public function __construct(private readonly UserServiceInterface $userService, private readonly TranslatorInterface $translator)
+    {
+    }
+
+    /**
      * Index action.
      *
      * @return Response HTTP response
      */
-    #[Route('/favorites', name: 'user_favorites')]
+    #[\Symfony\Component\Routing\Attribute\Route('/favorites', name: 'user_favorites')]
     public function favorites(): Response
     {
         $user = $this->getUser();
@@ -41,11 +54,11 @@ class FavoriteController extends AbstractController
      *
      * @return RedirectResponse Redirect response
      */
-    #[Route('/album/{id}/favorite', name: 'album_favorite', methods: ['POST'])]
-    public function toggleFavorite(Album $album, EntityManagerInterface $em): RedirectResponse
+    #[\Symfony\Component\Routing\Attribute\Route('/album/{id}/favorite', name: 'album_favorite', methods: ['POST'])]
+    public function toggleFavorite(#[MapEntity(id: 'id')] Album $album, EntityManagerInterface $em): RedirectResponse
     {
         $user = $this->getUser();
-        if (!$user) {
+        if (!$user instanceof \Symfony\Component\Security\Core\User\UserInterface) {
             throw $this->createAccessDeniedException();
         }
 
@@ -55,8 +68,12 @@ class FavoriteController extends AbstractController
             $user->addFavoriteAlbum($album);
         }
 
-        $em->persist($user);
-        $em->flush();
+        $this->userService->save($user);
+
+        $this->addFlash(
+            'success',
+            $this->translator->trans('message.AddedToFavorites')
+        );
 
         return $this->redirectToRoute('album_view', ['id' => $album->getId()]);
     }

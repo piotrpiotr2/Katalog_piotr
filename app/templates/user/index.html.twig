@@ -8,6 +8,11 @@
     <h1 class="display-2">{{ 'title.user_list'|trans }}</h1>
     {% if pagination is defined and pagination.items|length %}
 
+        {% if is_granted('ROLE_USER') %}
+            <a class="btn btn-outline-primary bi-arrow-90deg-up" style="float: left" href="{{ url('album_index') }}" title="{{ 'action.album_index'|trans }}">
+            </a>
+        {% endif %}
+
         <div class="navigation text-center">
             {{ knp_pagination_render(pagination) }}
         </div>

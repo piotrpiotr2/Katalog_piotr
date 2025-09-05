@@ -44,14 +44,14 @@ class Comment
     /**
      * Album.
      */
-    #[ORM\ManyToOne(targetEntity: Album::class)]
+    #[ORM\ManyToOne(targetEntity: Album::class, inversedBy: 'comments')]
     #[ORM\JoinColumn(name: 'album_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ?Album $album = null;
 
     /**
      * User.
      */
-    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'comments')]
+    #[ORM\ManyToOne(targetEntity: User::class)]
     private ?User $user = null;
 
     /**
@@ -238,7 +238,7 @@ class Comment
      */
     public function getAuthorName(): string
     {
-        if ($this->user) {
+        if ($this->user instanceof \App\Entity\User) {
             return $this->user->getNickname();
         }
 

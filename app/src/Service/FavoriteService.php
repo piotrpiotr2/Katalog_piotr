@@ -17,7 +17,7 @@ class FavoriteService implements FavoriteServiceInterface
     /**
      * Favorite repository.
      */
-    private FavoriteRepository $favoriteRepository;
+    private readonly FavoriteRepository $favoriteRepository;
 
     /**
      * Constructor.

@@ -14,7 +14,6 @@ use Doctrine\ORM\NonUniqueResultException;
  */
 interface TagServiceInterface
 {
-
     /**
      * Save entity.
      *

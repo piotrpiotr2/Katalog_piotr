@@ -9,6 +9,7 @@ namespace App\Controller;
 use App\Entity\Enum\UserRole;
 use App\Entity\User;
 use App\Form\Type\RegistrationFormType;
+use App\Service\UserServiceInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -16,12 +17,23 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Class RegistrationController.
  */
 class RegistrationController extends AbstractController
 {
+    /**
+     * Constructor.
+     *
+     * @param UserServiceInterface $userService User service
+     * @param TranslatorInterface  $translator  Translator
+     */
+    public function __construct(private readonly UserServiceInterface $userService, private readonly TranslatorInterface $translator)
+    {
+    }
+
     /**
      * Register action.
      *
@@ -46,8 +58,12 @@ class RegistrationController extends AbstractController
             $password = $form->get('password')->getData();
             $user->setPassword($userPasswordHasher->hashPassword($user, $password));
 
-            $entityManager->persist($user);
-            $entityManager->flush();
+            $this->userService->save($user);
+
+            $this->addFlash(
+                'success',
+                $this->translator->trans('message.created_successfully')
+            );
 
             return $security->login($user, 'form_login', 'main');
         }

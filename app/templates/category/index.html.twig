@@ -8,6 +8,12 @@
     <h1 class="display-2">{{ 'title.category_list'|trans }}</h1>
     {% if pagination is defined and pagination.items|length %}
 
+        {% if is_granted('ROLE_USER') %}
+            <a class="btn btn-outline-primary bi-arrow-90deg-up" style="float: left; margin-right: 10px" href="{{ url('album_index') }}" title="{{ 'action.album_index'|trans }}">
+
+            </a>
+        {% endif %}
+
         <div class="navigation text-center">
             {{ knp_pagination_render(pagination) }}
         </div>
@@ -41,6 +47,11 @@
             </tbody>
         </table>
 
+        {% if is_granted('ROLE_ADMIN') %}
+            <a class="btn btn-outline-primary" style="float: right" href="{{ url('category_create') }}" title="{{ 'action.create'|trans }}">
+                {{ 'action.create'|trans }}
+            </a>
+        {% endif %}
 
     {% else %}
         <p>

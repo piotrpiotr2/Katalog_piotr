@@ -17,7 +17,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 #[ORM\Entity(repositoryClass: TagRepository::class)]
 #[ORM\Table(name: 'tags')]
-class Tag
+class Tag implements \Stringable
 {
     /**
      * Primary key.

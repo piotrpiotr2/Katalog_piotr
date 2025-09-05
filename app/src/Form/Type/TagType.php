@@ -1,22 +1,21 @@
 <?php
 
 /**
- * User type.
+ * Tag type.
  */
 
 namespace App\Form\Type;
 
-use App\Entity\User;
+use App\Entity\Tag;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Class Usertype.
+ * Class TagType.
  */
-class UserType extends AbstractType
+class TagType extends AbstractType
 {
     /**
      * Builds the form.
@@ -31,28 +30,15 @@ class UserType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        if (!$options['is_edit']) {
-            $builder
-                ->add('email');
-        }
-        $builder->add('password', PasswordType::class, [
-            'attr' => ['maxlength' => 255],
-            'required' => true,
-        ]);
-
-        if ($options['is_admin']) {
-            $builder->add('roles', ChoiceType::class, [
-                'label' => 'label.roles',
-                'choices' => [
-                    'label.role_admin' => 'ROLE_ADMIN',
-                ],
-                'expanded' => true,
-                'multiple' => true,
+        $builder->add(
+            'title',
+            TextType::class,
+            [
+                'label' => 'label.title',
                 'required' => true,
-
-                'empty_data' => ['ROLE_USER'],
-            ]);
-        }
+                'attr' => ['max_length' => 64],
+            ]
+        );
     }
 
     /**
@@ -62,11 +48,7 @@ class UserType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefaults([
-            'data_class' => User::class,
-            'is_edit' => false,
-            'is_admin' => false,
-        ]);
+        $resolver->setDefaults(['data_class' => Tag::class]);
     }
 
     /**
@@ -79,6 +61,6 @@ class UserType extends AbstractType
      */
     public function getBlockPrefix(): string
     {
-        return 'user';
+        return 'tag';
     }
 }

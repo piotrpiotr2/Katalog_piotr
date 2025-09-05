@@ -255,6 +255,50 @@
           <source>title.album_create</source>
           <target>Utwórz album</target>
         </trans-unit>
+        <trans-unit id="validators.password_required" datatype="html">
+          <source>Please enter a password</source>
+          <target>Proszę wprowadzić hasło</target>
+        </trans-unit>
+        <trans-unit id="validators.password_minlength" datatype="html">
+          <source>Your password should be at least 6 characters</source>
+          <target>Hasło powinno mieć co najmniej 6 znaków</target>
+        </trans-unit>
+        <trans-unit id="validators.email_exists" datatype="html">
+          <source>There is already an account with this email</source>
+          <target>Konto z tym adresem e-mail już istnieje</target>
+        </trans-unit>
+        <trans-unit id="messages.action.album_index" datatype="html">
+          <source>action.album_index</source>
+          <target>albumy</target>
+        </trans-unit>
+        <trans-unit id="messages.action.listUsers" datatype="html">
+          <source>action.listUsers</source>
+          <target>lista użytkowników</target>
+        </trans-unit>
+        <trans-unit id="messages.action.listCategories" datatype="html">
+          <source>action.listCategories</source>
+          <target>lista kategorii</target>
+        </trans-unit>
+        <trans-unit id="message.AddedToFavorites">
+          <source>message.AddedToFavorites</source>
+          <target>Album dodano do ulubionych</target>
+        </trans-unit>
+          <trans-unit id="label.Password">
+            <source>label.Password</source>
+            <target>Hasło</target>
+          </trans-unit>
+        <trans-unit id="Password">
+            <source>Password</source>
+            <target>Hasło</target>
+        </trans-unit>
+      <trans-unit id="label.role_admin">
+        <source>label.role_admin</source>
+        <target>Rola admina</target>
+      </trans-unit>
+        <trans-unit id="label.none">
+          <source>label.none</source>
+          <target>Brak</target>
+        </trans-unit>
     </body>
   </file>
 </xliff>

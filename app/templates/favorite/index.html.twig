@@ -7,6 +7,11 @@
 {% block body %}
     <h1>{{ 'title.favorite_albums'|trans }}</h1>
 
+    {% if is_granted('ROLE_USER') %}
+        <a class="btn btn-outline-primary bi-arrow-90deg-up" style="float: left" href="{{ url('album_index') }}" title="{{ 'action.album_index'|trans }}">
+        </a>
+    {% endif %}
+
     {% if albums is defined and albums|length %}
         <table class="table table-striped">
             <thead>

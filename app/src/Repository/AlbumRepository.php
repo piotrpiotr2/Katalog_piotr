@@ -52,7 +52,6 @@ class AlbumRepository extends ServiceEntityRepository
         return $this->applyFiltersToList($queryBuilder, $filters);
     }
 
-
     /**
      * Count albums by category.
      *
@@ -70,7 +69,6 @@ class AlbumRepository extends ServiceEntityRepository
             ->getQuery()
             ->getSingleScalarResult();
     }
-
 
     /**
      * Save entity.

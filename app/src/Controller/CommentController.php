@@ -18,31 +18,17 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 /**
  * Class CommentController.
  */
-#[Route('/comment')]
 class CommentController extends AbstractController
 {
-    /**
-     * Comment Service.
-     */
-    private CommentServiceInterface $commentService;
-
-    /**
-     * Translator.
-     */
-    private TranslatorInterface $translator;
-
     /**
      * Constructor.
      *
      * @param CommentServiceInterface $commentService Comment Service
      * @param TranslatorInterface     $translator     Translator
      */
-    public function __construct(CommentServiceInterface $commentService, TranslatorInterface $translator)
+    public function __construct(private readonly CommentServiceInterface $commentService, private readonly TranslatorInterface $translator)
     {
-        $this->commentService = $commentService;
-        $this->translator = $translator;
     }
-
     /**
      * Delete action.
      *
@@ -51,8 +37,8 @@ class CommentController extends AbstractController
      *
      * @return Response HTTP response
      */
-    #[Route('/{id}/delete', name: 'comment_delete', requirements: ['id' => '[1-9]\d*'], methods: 'GET|DELETE')]
-    public function delete(Request $request, Comment $comment): Response
+    #[\Symfony\Component\Routing\Attribute\Route('/comment/{id}/delete', name: 'comment_delete', requirements: ['id' => '[1-9]\d*'], methods: 'GET|DELETE')]
+    public function delete(Request $request, #[MapEntity(id: 'id')] Comment $comment): Response
     {
         if (!$this->isGranted('ROLE_ADMIN')) {
             $this->addFlash(

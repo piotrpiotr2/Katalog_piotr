@@ -3,6 +3,7 @@
 /**
  * Registration form type.
  */
+
 namespace App\Form\Type;
 
 use App\Entity\User;
@@ -34,11 +35,11 @@ class RegistrationFormType extends AbstractType
                 'mapped' => true,
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'Please enter a password',
+                        'message' => 'validators.password_required',
                     ]),
                     new Length([
                         'min' => 6,
-                        'minMessage' => 'Your password should be at least 6 characters',
+                        'minMessage' => 'validators.password_minlength',
                         'max' => 4096,
                     ]),
                 ],

@@ -19,7 +19,6 @@ use Symfony\Component\Form\DataTransformerInterface;
  */
 class TagsDataTransformer implements DataTransformerInterface
 {
-
     /**
      * Constructor.
      *
@@ -74,7 +73,7 @@ class TagsDataTransformer implements DataTransformerInterface
             }
 
             $tag = $this->tagService->findOneByTitle(strtolower($tagTitle));
-            if (null === $tag) {
+            if (!$tag instanceof \App\Entity\Tag) {
                 $tag = new Tag();
                 $tag->setTitle($tagTitle); // or setName() if that's your actual field
                 $this->tagService->save($tag);
