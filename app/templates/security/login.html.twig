@@ -3,9 +3,6 @@
 {% block title %}Log in!{% endblock %}
 
 {% block body %}
-    <div style="margin-bottom: 10px">
-        <a href="{{ url('app_register') }}" >{{ 'action.register'|trans }}</a>
-    </div>
 
     <form method="post" action="{{ path('app_login') }}">
         {% if error %}

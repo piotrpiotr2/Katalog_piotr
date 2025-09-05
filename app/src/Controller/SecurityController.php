@@ -28,7 +28,7 @@ class SecurityController extends AbstractController
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
         if ($this->getUser() instanceof UserInterface) {
-            return $this->redirectToRoute('talbum_index');
+            return $this->redirectToRoute('album_index');
         }
 
         // get the login error if there is one

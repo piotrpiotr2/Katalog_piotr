@@ -165,7 +165,7 @@
         </trans-unit>
         <trans-unit id="action.register">
           <source>action.register</source>
-          <target>Zarejestruj</target>
+          <target>Zarejestruj się</target>
         </trans-unit>
         <trans-unit id="title.favorite_albums">
           <source>title.favorite_albums</source>

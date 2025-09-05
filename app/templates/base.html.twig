@@ -45,6 +45,8 @@
                 {% else %}
                     {% if app.request.attributes.get('_route') != 'app_login' %}
                         <a class="btn btn-sm btn-primary" href="{{ url('app_login') }}">{{ 'action.login'|trans }}</a>
+                    {% else %}
+                        <a class="btn btn-sm btn-primary" href="{{ url('app_register') }}">{{ 'action.register'|trans }}</a>
                     {% endif %}
                 {% endif %}
             </div>
