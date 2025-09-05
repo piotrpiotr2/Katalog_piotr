@@ -17,10 +17,10 @@
             {{ knp_pagination_render(pagination) }}
         </div>
 
-        <table class="table table-striped">
+        <table class="table table-responsive">
             <thead>
             <tr>
-                <th>{{ knp_pagination_sortable(pagination, 'label.id'|trans, 'users.id') }}</th>
+                <th class="d-none d-md-table-cell">{{ knp_pagination_sortable(pagination, 'label.id'|trans, 'users.id') }}</th>
                 <th>{{ knp_pagination_sortable(pagination, 'label.email'|trans, 'users.email') }}</th>
                 <th>{{ knp_pagination_sortable(pagination, 'label.roles'|trans, 'users.roles') }}</th>
                 <th>{{ 'label.actions'|trans }}</th>
@@ -30,10 +30,10 @@
             {% for user in pagination.items %}
                 {% if app.user.id != user.id %}
                     <tr>
-                        <td>{{ user.id }}</td>
+                        <td class="d-none d-md-table-cell">{{ user.id }}</td>
                         <td>{{ user.email }}</td>
                         <td>{{ user.roles|join(', ') }}</td>
-                        <td  class="action-links">
+                        <td class="action-links">
                             <a class="btn btn-outline-primary" href="{{ url('user_view', {id: user.id}) }}" title="{{ 'action.view'|trans }}">
                                 {{ 'action.view'|trans }}
                             </a>

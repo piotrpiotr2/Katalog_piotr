@@ -1,105 +1,150 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}
-    {{ 'title.album_list'|trans }}
-{% endblock %}
+{% block title %}{{ 'title.album_list'|trans }}{% endblock %}
 
 {% block body %}
-    <h1>{{ 'title.album_list'|trans }}</h1>
+    <div class="d-flex align-items-center justify-content-between gap-2 mb-3">
+        <h1 class="mb-0">{{ 'title.album_list'|trans }}</h1>
+
+        <div class="d-flex flex-wrap gap-2" style="justify-content: end">
+            {% if is_granted('ROLE_USER') %}
+                <a class="btn btn-sm btn-outline-primary" href="{{ url('user_favorites') }}"
+                   title="{{ 'action.listFavorites'|trans }}">
+                    {{ 'action.listFavorites'|trans }}
+                </a>
+            {% endif %}
+            {% if is_granted('ROLE_ADMIN') %}
+                <a class="btn btn-sm btn-outline-primary" href="{{ url('user_index') }}"
+                   title="{{ 'action.listUsers'|trans }}">
+                    {{ 'action.listUsers'|trans }}
+                </a>
+                <a class="btn btn-sm btn-outline-primary" href="{{ url('category_index') }}"
+                   title="{{ 'action.listCategories'|trans }}">
+                    {{ 'action.listCategories'|trans }}
+                </a>
+            {% endif %}
+        </div>
+    </div>
+
     {% if pagination is defined and pagination.items|length %}
 
-
-        {% if is_granted('ROLE_USER') %}
-            <a class="btn btn-outline-primary" style="float: right" href="{{ url('user_favorites') }}" title="{{ 'action.listFavorites'|trans }}">
-                {{ 'action.listFavorites'|trans }}
-            </a>
-        {% endif %}
-
-        {% if is_granted('ROLE_ADMIN') %}
-            <a class="btn btn-outline-primary" style="float: right; margin-inline: 12px" href="{{ url('user_index') }}" title="{{ 'action.listUsers'|trans }}">
-                {{ 'action.listUsers'|trans }}
-            </a>
-            <a class="btn btn-outline-primary" style="float: right;" href="{{ url('category_index') }}" title="{{ 'action.listCategories'|trans }}">
-                {{ 'action.listCategories'|trans }}
-            </a>
-        {% endif %}
-
-        <div class="navigation text-center">
+        <div class="navigation d-flex justify-content-center flex-wrap mb-3" style="scale: 0.96;">
             {{ knp_pagination_render(pagination) }}
         </div>
 
-        <table class="table table-striped">
-            <thead>
-            <tr>
-                <th>{{ knp_pagination_sortable(pagination, 'label.id'|trans, 'album.id') }}</th>
-                <th>{{ knp_pagination_sortable(pagination, 'label.created_at'|trans, 'album.createdAt') }}</th>
-                <th>{{ knp_pagination_sortable(pagination, 'label.updated_at'|trans, 'album.updatedAt') }}</th>
-                <th>{{ knp_pagination_sortable(pagination, 'label.title'|trans, 'album.title') }}</th>
-                <th>{{ knp_pagination_sortable(pagination, 'label_category'|trans, 'category.title') }}</th>
-                <th>{{ 'label.tag'|trans }}</th>
-                <th>{{ 'label.actions'|trans }}</th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for album in pagination.items %}
-                <tr>
-                    <td>{{ album.id }}</td>
-                    <td>{{ album.createdAt|format_date('long') }}</td>
-                    <td>{{ album.updatedAt|format_date('long') }}</td>
-                    <td>{{ album.title }}</td>
-                    <td>
-                        <a class="btn btn-outline-primary"
-                           href="{{ url('album_index', {'categoryId' : album.category.id}) }}"
-                           title="{{ album.category.title }}">
-                            {{ album.category.title }}
-                        </a>
-                    </td>
-                    <td>
-                        {% if album.tags is defined and album.tags|length %}
-                            {% for tag in album.tags %}
-                                <a class="btn btn-outline-primary"
-                                   href="{{ url('album_index', {'tagId' : tag.id}) }}"
-                                   title="{{ tag.title }}">
-                                    {{ tag.title }}
+        <div class="table-responsive">
+            <table class="table table-striped align-middle">
+                <thead>
+                    <tr>
+                        <th class="d-none d-md-table-cell">{{ knp_pagination_sortable(pagination, 'label.id'|trans, 'album.id') }}</th>
+
+                        <th class="d-none d-md-table-cell">
+                            {{ knp_pagination_sortable(pagination, 'label.created_at'|trans, 'album.createdAt') }}
+                        </th>
+                        <th class="d-none d-lg-table-cell">
+                            {{ knp_pagination_sortable(pagination, 'label.updated_at'|trans, 'album.updatedAt') }}
+                        </th>
+
+                        <th>{{ knp_pagination_sortable(pagination, 'label.title'|trans, 'album.title') }}</th>
+
+                        <th>
+                            {{ knp_pagination_sortable(pagination, 'label_category'|trans, 'category.title') }}
+                        </th>
+
+                        <th class="d-none d-md-table-cell">{{ 'label.tag'|trans }}</th>
+
+                        <th class="text-end">{{ 'label.actions'|trans }}</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                {% for album in pagination.items %}
+                    <tr>
+                        <td class="d-none d-md-table-cell">{{ album.id }}</td>
+
+                        <td class="d-none d-md-table-cell">
+                            {{ album.createdAt|format_date('long') }}
+                        </td>
+                        <td class="d-none d-lg-table-cell">
+                            {{ album.updatedAt|format_date('long') }}
+                        </td>
+
+                        <td class="text-break">{{ album.title }}</td>
+
+                        <td>
+                            <a class="badge text-bg-light border text-decoration-none"
+                               href="{{ url('album_index', {'categoryId': album.category.id}) }}"
+                               title="{{ album.category.title }}">
+                                {{ album.category.title }}
+                            </a>
+                        </td>
+
+                        <td class="text-wrap d-none d-md-table-cell">
+                            {% if album.tags is defined and album.tags|length %}
+                                <div class="d-flex flex-wrap gap-1">
+                                    {% for tag in album.tags %}
+                                        <a class="badge text-bg-light border text-decoration-none"
+                                           href="{{ url('album_index', {'tagId': tag.id}) }}"
+                                           title="{{ tag.title }}">
+                                            {{ tag.title }}
+                                        </a>
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                <span class="text-body-secondary">—</span>
+                            {% endif %}
+                        </td>
+
+                        <td class="text-end">
+                            <div class="btn-group btn-group-sm d-inline-flex d-md-none" role="group" style="display: flex; flex-direction: column;">
+                                <a class="btn btn-outline-primary" href="{{ url('album_view', {id: album.id}) }}">
+                                    {{ 'action.view'|trans }}
                                 </a>
-                            {% endfor %}
-                        {% else %}
-                            &nbsp;
-                        {% endif %}
-                    </td>
-                    <td  class="action-links" style="display: flex; flex-direction: column;">
-                        <a class="btn btn-outline-primary" href="{{ url('album_view', {id: album.id}) }}" title="{{ 'action.view'|trans }}">
-                            {{ 'action.view'|trans }}
-                        </a>
-                        {% if is_granted('ROLE_ADMIN') %}
-                            <a class="btn btn-outline-success" href="{{ url('album_edit', {id: album.id}) }}" title="{{ 'action.edit'|trans }}">
-                                {{ 'action.edit'|trans }}
-                            </a>
-                            <a class="btn btn-outline-danger" href="{{ url('album_delete', {id: album.id}) }}" title="{{ 'action.delete'|trans }}">
-                                {{ 'action.delete'|trans }}
-                            </a>
-                        {% endif %}
-                    </td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
+                                {% if is_granted('ROLE_ADMIN') %}
+                                    <a class="btn btn-outline-success" href="{{ url('album_edit', {id: album.id}) }}">
+                                        {{ 'action.edit'|trans }}
+                                    </a>
+                                    <a class="btn btn-outline-danger" href="{{ url('album_delete', {id: album.id}) }}">
+                                        {{ 'action.delete'|trans }}
+                                    </a>
+                                {% endif %}
+                            </div>
 
-        {% if is_granted('ROLE_ADMIN') %}
-            <a class="btn btn-outline-primary" style="float: right" href="{{ url('album_create') }}" title="{{ 'action.create'|trans }}">
-                {{ 'action.create'|trans }}
-            </a>
-        {% endif %}
-
-        <div class="navigation text-center">
-            {{ knp_pagination_render(pagination) }}
+                            <div class="d-none d-md-inline-block">
+                                <div class="d-grid gap-1">
+                                    <a class="btn btn-sm btn-outline-primary" href="{{ url('album_view', {id: album.id}) }}">
+                                        {{ 'action.view'|trans }}
+                                    </a>
+                                    {% if is_granted('ROLE_ADMIN') %}
+                                        <a class="btn btn-sm btn-outline-success" href="{{ url('album_edit', {id: album.id}) }}">
+                                            {{ 'action.edit'|trans }}
+                                        </a>
+                                        <a class="btn btn-sm btn-outline-danger" href="{{ url('album_delete', {id: album.id}) }}">
+                                            {{ 'action.delete'|trans }}
+                                        </a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
         </div>
 
+        {% if is_granted('ROLE_ADMIN') %}
+            <div class="d-flex justify-content-end my-3">
+                <a class="btn btn-outline-primary" href="{{ url('album_create') }}" title="{{ 'action.create'|trans }}">
+                    {{ 'action.create'|trans }}
+                </a>
+            </div>
+        {% endif %}
 
+        <div class="navigation d-flex justify-content-center flex-wrap mt-3">
+            {{ knp_pagination_render(pagination) }}
+        </div>
 
     {% else %}
-        <p>
-            {{ 'message.empty_list'|trans }}
-        </p>
+        <p class="text-body-secondary">{{ 'message.empty_list'|trans }}</p>
     {% endif %}
 {% endblock %}
