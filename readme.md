@@ -2,16 +2,6 @@
 
 Zestaw startowy oparty jest na [The perfect kit starter for a Symfony 4 project with Docker and PHP 7.2](https://medium.com/@romaricp/the-perfect-kit-starter-for-a-symfony-4-project-with-docker-and-php-7-2-fda447b6bca1).
 
-## Co zawiera?
-
-* Apache 2.4.57 (Debian)
-* PHP 8.3 FPM
-* MySQL 8.3.1
-* NodeJS LTS (najnowszy)
-* Composer
-* Symfony CLI
-* xdebug
-* djfarrelly/maildev
 
 ## Wymagania
 
@@ -43,6 +33,14 @@ rm .gitkeep
 git config --global user.email "you@example.com"
 symfony new ../app --version=lts --webapp
 chown -R dev.dev *
+composer install
+```
+
+* Aby ustawić migracje i fixtury danych:
+
+```bash
+bin/console doctrine:migrations:migrate
+bin/console doctrine:fixtures:load
 ```
 
 ## Adresy URL i porty kontenerów
