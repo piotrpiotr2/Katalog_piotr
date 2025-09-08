@@ -1,4 +1,4 @@
-# Docker Symfony Starter Kit
+# Katalog Albumów - Piotr Kurczab
 
 Zestaw startowy oparty jest na [The perfect kit starter for a Symfony 4 project with Docker and PHP 7.2](https://medium.com/@romaricp/the-perfect-kit-starter-for-a-symfony-4-project-with-docker-and-php-7-2-fda447b6bca1).
 
