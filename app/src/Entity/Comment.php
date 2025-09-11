@@ -238,7 +238,7 @@ class Comment
      */
     public function getAuthorName(): string
     {
-        if ($this->user instanceof \App\Entity\User) {
+        if ($this->user instanceof User) {
             return $this->user->getNickname();
         }
 

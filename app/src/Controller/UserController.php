@@ -14,7 +14,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
@@ -31,6 +30,7 @@ class UserController extends AbstractController
     public function __construct(private readonly UserServiceInterface $userService, private readonly TranslatorInterface $translator)
     {
     }
+
     /**
      * Index action.
      *
@@ -47,6 +47,7 @@ class UserController extends AbstractController
 
         return $this->render('user/index.html.twig', ['pagination' => $pagination]);
     }
+
     /**
      * view action.
      *
@@ -64,6 +65,7 @@ class UserController extends AbstractController
     {
         return $this->render('user/view.html.twig', ['user' => $user]);
     }
+
     /**
      * Edit action.
      *
@@ -117,6 +119,7 @@ class UserController extends AbstractController
             ]
         );
     }
+
     /**
      * Delete action.
      *
@@ -157,6 +160,7 @@ class UserController extends AbstractController
             ]
         );
     }
+
     /**
      * Profile edit action.
      *

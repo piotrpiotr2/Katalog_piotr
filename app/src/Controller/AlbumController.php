@@ -41,6 +41,7 @@ class AlbumController extends AbstractController
     public function __construct(private readonly AlbumServiceInterface $albumService, private readonly CommentServiceInterface $commentService, private readonly TranslatorInterface $translator)
     {
     }
+
     /**
      * Index action.
      *
@@ -63,6 +64,7 @@ class AlbumController extends AbstractController
 
         return $this->render('album/index.html.twig', ['pagination' => $pagination]);
     }
+
     /**
      * View action.
      *
@@ -125,6 +127,7 @@ class AlbumController extends AbstractController
             ]
         );
     }
+
     /**
      * Create action.
      *
@@ -159,6 +162,7 @@ class AlbumController extends AbstractController
             ['form' => $form->createView()]
         );
     }
+
     /**
      * Edit action.
      *
@@ -204,6 +208,7 @@ class AlbumController extends AbstractController
             ]
         );
     }
+
     /**
      * Delete action.
      *

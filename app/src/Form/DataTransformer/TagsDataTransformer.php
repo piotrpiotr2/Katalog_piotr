@@ -73,7 +73,7 @@ class TagsDataTransformer implements DataTransformerInterface
             }
 
             $tag = $this->tagService->findOneByTitle(strtolower($tagTitle));
-            if (!$tag instanceof \App\Entity\Tag) {
+            if (!$tag instanceof Tag) {
                 $tag = new Tag();
                 $tag->setTitle($tagTitle); // or setName() if that's your actual field
                 $this->tagService->save($tag);
